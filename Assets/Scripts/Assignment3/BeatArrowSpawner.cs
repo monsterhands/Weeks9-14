@@ -21,6 +21,7 @@ public class BeatArrowSpawner : MonoBehaviour
     public float t;
     public bool timerMax = false;
     public GameObject spawnedBeatN;
+    //public GameObject currentSpawnBeatN;
     public List<GameObject> spawnedBeatsN;
     public GameObject spawnedBeatS;
     public List<GameObject> spawnedBeatsS;
@@ -29,6 +30,7 @@ public class BeatArrowSpawner : MonoBehaviour
     public GameObject spawnedBeatW;
     public List<GameObject> spawnedBeatsW;
     public bool songEnded = false;
+    public BeatArrowsSensor sensorScript;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -48,7 +50,7 @@ public class BeatArrowSpawner : MonoBehaviour
         //add if condition for bool to pick song
         t += Time.deltaTime;
 
-        if (beatsTimerN.Count == 0)
+        if (beatsTimerN.Count == 0 && spawnedBeatsN.Count < 0)
         {
             Debug.Log("Finished north beats");
         } else if (beatsTimerN.Count > 0 && t > beatsTimerN[0])
@@ -56,8 +58,16 @@ public class BeatArrowSpawner : MonoBehaviour
             Debug.Log("Beat hit");
             spawnedBeatN = Instantiate(beatarrowN);
             spawnedBeatsN.Add(spawnedBeatN);
+            //currentSpawnBeatN = spawnedBeatsN[0];
             currentBeatN = (int)beatsTimerN[0];
-            beatsTimerN.Remove(currentBeatN);
+            beatsTimerN.Remove(currentBeatN);            
+        }
+        if (sensorScript.missedBeat == true)
+        {
+            //GameObject currentSpawnBeatN = spawnedBeatsN[0];
+            Destroy(spawnedBeatsN[0]);
+            spawnedBeatsN.Remove(spawnedBeatsN[0]);
+            sensorScript.OnFailHit.Invoke();
         }
 
         if (beatsTimerS.Count == 0)
@@ -89,6 +99,7 @@ public class BeatArrowSpawner : MonoBehaviour
         if (beatsTimerW.Count == 0 && timerMax == true)
         {
             songEnded = true;
+            t = 0;
         }
         else if (beatsTimerW.Count > 0 && t > beatsTimerW[0])
         {
@@ -108,7 +119,7 @@ public class BeatArrowSpawner : MonoBehaviour
         beatsTimerE.Add(3);
         beatsTimerS.Add(4);
         beatsTimerN.Add(4);
-        beatsTimerN.Add(5);
+        //beatsTimerN.Add(5);
         beatsTimerE.Add(7);
         beatsTimerN.Add(8);
         beatsTimerW.Add(9);
@@ -162,50 +173,6 @@ public class BeatArrowSpawner : MonoBehaviour
         {
             timerMax = true;
         }
-
-        //if (t > beatsTimerN[0])
-        //{
-        //    Debug.Log("Beat hit");
-        //    spawnedBeatN = Instantiate(beatarrowN);
-        //    spawnedBeatsN.Add(spawnedBeatN);
-        //    currentBeatN = (int)beatsTimerN[0];
-        //    beatsTimerN.Remove(currentBeatN);
-        //}
-
-
-        //t += Time.deltaTime;
-        ////beatNumberN = Random.Range(0, beatsTimerN.Count);
-        //bn1 = 0.5f;
-        //bn2 = 1f;
-        //bn3 = 3f;
-        //bn4 = 5.5f;
-
-        ////timerMax = 68;
-
-        //if (t == bn1 || t == bn2 || t == bn3 || t == bn4)
-        //{
-        //    Debug.Log("Beat hit");
-        //    spawnedBeatN = Instantiate(beatarrowN);
-        //    spawnedBeatsN.Add(spawnedBeatN);
-        //}
-
-        //for (int i = 0; i < beatsTimerN.Count; i++)
-        //{
-        //    if (t > beatsTimerN[0])
-        //    {
-        //        Debug.Log("Beat hit");
-        //        spawnedBeatN = Instantiate(beatarrowN);
-        //        spawnedBeatsN.Add(spawnedBeatN);
-        //        currentBeatN = (int)beatsTimerN[0];
-        //        beatsTimerN.Remove(currentBeatN);
-        //    }
-        //}
-
-
-        //if (t == timerMax)
-        //{
-        //    songEnded = true;
-        //}
     }
 
 
