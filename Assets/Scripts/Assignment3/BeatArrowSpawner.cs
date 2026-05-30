@@ -21,7 +21,6 @@ public class BeatArrowSpawner : MonoBehaviour
     public float t;
     public bool timerMax = false;
     public GameObject spawnedBeatN;
-    //public GameObject currentSpawnBeatN;
     public List<GameObject> spawnedBeatsN;
     public GameObject spawnedBeatS;
     public List<GameObject> spawnedBeatsS;
@@ -48,9 +47,16 @@ public class BeatArrowSpawner : MonoBehaviour
     void Update()
     {
         //add if condition for bool to pick song
-        t += Time.deltaTime;
+        if (songEnded == true)
+        {
+            t = 0;
+        }else
+        {
+            t += Time.deltaTime;
+        }
+            
 
-        if (beatsTimerN.Count == 0 && spawnedBeatsN.Count < 0)
+        if (beatsTimerN.Count < 0 && spawnedBeatsN.Count < 0)
         {
             Debug.Log("Finished north beats");
         } else if (beatsTimerN.Count > 0 && t > beatsTimerN[0])
@@ -58,19 +64,17 @@ public class BeatArrowSpawner : MonoBehaviour
             Debug.Log("Beat hit");
             spawnedBeatN = Instantiate(beatarrowN);
             spawnedBeatsN.Add(spawnedBeatN);
-            //currentSpawnBeatN = spawnedBeatsN[0];
             currentBeatN = (int)beatsTimerN[0];
             beatsTimerN.Remove(currentBeatN);            
         }
-        if (sensorScript.missedBeat == true)
+        if (sensorScript.missedBeatN == true)
         {
-            //GameObject currentSpawnBeatN = spawnedBeatsN[0];
             Destroy(spawnedBeatsN[0]);
             spawnedBeatsN.Remove(spawnedBeatsN[0]);
             sensorScript.OnFailHit.Invoke();
         }
 
-        if (beatsTimerS.Count == 0)
+        if (beatsTimerS.Count < 0 && spawnedBeatsS.Count < 0)
         {
             Debug.Log("Finished south beats");
         }
@@ -82,8 +86,14 @@ public class BeatArrowSpawner : MonoBehaviour
             currentBeatS = (int)beatsTimerS[0];
             beatsTimerS.Remove(currentBeatS);
         }
+        if (sensorScript.missedBeatS == true)
+        {
+            Destroy(spawnedBeatsS[0]);
+            spawnedBeatsS.Remove(spawnedBeatsS[0]);
+            sensorScript.OnFailHit.Invoke();
+        }
 
-        if (beatsTimerE.Count == 0 && timerMax == true)
+        if (beatsTimerE.Count < 0 && timerMax == true)
         {
             Debug.Log("Finished east beats");
         }
@@ -95,11 +105,16 @@ public class BeatArrowSpawner : MonoBehaviour
             currentBeatE = (int)beatsTimerE[0];
             beatsTimerE.Remove(currentBeatE);
         }
+        if (sensorScript.missedBeatE == true)
+        {
+            Destroy(spawnedBeatsE[0]);
+            spawnedBeatsE.Remove(spawnedBeatsE[0]);
+            sensorScript.OnFailHit.Invoke();
+        }
 
-        if (beatsTimerW.Count == 0 && timerMax == true)
+        if (beatsTimerW.Count < 0 && timerMax == true)
         {
             songEnded = true;
-            t = 0;
         }
         else if (beatsTimerW.Count > 0 && t > beatsTimerW[0])
         {
@@ -108,6 +123,12 @@ public class BeatArrowSpawner : MonoBehaviour
             spawnedBeatsW.Add(spawnedBeatW);
             currentBeatW = (int)beatsTimerW[0];
             beatsTimerW.Remove(currentBeatW);
+        }
+        if (sensorScript.missedBeatW == true)
+        {
+            Destroy(spawnedBeatsW[0]);
+            spawnedBeatsW.Remove(spawnedBeatsW[0]);
+            sensorScript.OnFailHit.Invoke();
         }
 
     }
@@ -119,7 +140,7 @@ public class BeatArrowSpawner : MonoBehaviour
         beatsTimerE.Add(3);
         beatsTimerS.Add(4);
         beatsTimerN.Add(4);
-        //beatsTimerN.Add(5);
+        beatsTimerN.Add(5);
         beatsTimerE.Add(7);
         beatsTimerN.Add(8);
         beatsTimerW.Add(9);
@@ -169,7 +190,7 @@ public class BeatArrowSpawner : MonoBehaviour
         beatsTimerW.Add(71);
 
 
-        if (t>72)
+        if (t>73)
         {
             timerMax = true;
         }

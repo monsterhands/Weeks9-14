@@ -6,13 +6,15 @@ public class BeatArrowsSensor : MonoBehaviour
 {
     public UnityEvent OnSuccessHit;
     public UnityEvent OnFailHit;
-    public UnityEvent OnBeatSHit;
-    public UnityEvent OnBeatEHit;
-    public UnityEvent OnBeatWHit;
     public bool isInSensorN = false;
-    public bool missedBeat = false;
+    public bool isInSensorS = false;
+    public bool isInSensorE = false;
+    public bool isInSensorW = false;
+    public bool missedBeatN = false;
+    public bool missedBeatS = false;
+    public bool missedBeatE = false;
+    public bool missedBeatW = false;
     public BeatArrowSpawner spawnerScript;
-    //public GameObject currentBeatN;
     public GameObject sensorN;
     public GameObject sensorS;
     public GameObject sensorE;
@@ -28,14 +30,12 @@ public class BeatArrowsSensor : MonoBehaviour
     void Update()
     {
         //
-        for (int i = 0; i < spawnerScript.spawnedBeatsN.Count; i++)
+        for (int north = 0; north < spawnerScript.spawnedBeatsN.Count; north++)
         {
         if (spawnerScript.spawnedBeatN != null)
                 {
-                    Vector3 CurrentBeatNPosition = spawnerScript.spawnedBeatsN[i].transform.position;
-                    //Vector3 NextBeatNPosition = spawnerScript.spawnedBeatN.transform.position;
+                    Vector3 CurrentBeatNPosition = spawnerScript.spawnedBeatsN[north].transform.position;
                     float distance1 = Vector2.Distance(CurrentBeatNPosition, sensorN.transform.position);
-                    //float distance2 = Vector2.Distance(NextBeatNPosition, sensorN.transform.position);
                     if (distance1 < 0.2f)
                     {
                         if (isInSensorN == true)
@@ -47,11 +47,11 @@ public class BeatArrowsSensor : MonoBehaviour
                             isInSensorN = true;
                         }
                     }
-                    else
+                    else if (distance1 > 0.7f)
                     {
                         if (isInSensorN == true)
                         {
-                            missedBeat = true;
+                            missedBeatN = true;
                             isInSensorN = false;
                         }
                         else
@@ -64,8 +64,115 @@ public class BeatArrowsSensor : MonoBehaviour
             
                 }
         }
-            
-        
+
+        for (int south = 0; south < spawnerScript.spawnedBeatsS.Count; south++)
+        {
+            if (spawnerScript.spawnedBeatS != null)
+            {
+                Vector3 CurrentBeatSPosition = spawnerScript.spawnedBeatsS[south].transform.position;
+                float distance1 = Vector2.Distance(CurrentBeatSPosition, sensorS.transform.position);
+                if (distance1 < 0.2f)
+                {
+                    if (isInSensorS == true)
+                    {
+
+                    }
+                    else
+                    {
+                        isInSensorS = true;
+                    }
+                }
+                else if (distance1 > 0.7f)
+                {
+                    if (isInSensorS == true)
+                    {
+                        missedBeatS = true;
+                        isInSensorS = false;
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+            else
+            {
+
+            }
+        }
+
+        for (int east = 0; east < spawnerScript.spawnedBeatsE.Count; east++)
+        {
+            if (spawnerScript.spawnedBeatS != null)
+            {
+                Vector3 CurrentBeatEPosition = spawnerScript.spawnedBeatsE[east].transform.position;
+                float distance1 = Vector2.Distance(CurrentBeatEPosition, sensorE.transform.position);
+                if (distance1 < 0.2f)
+                {
+                    if (isInSensorE == true)
+                    {
+
+                    }
+                    else
+                    {
+                        isInSensorE = true;
+                    }
+                }
+                else if (distance1 > 0.7f)
+                {
+                    if (isInSensorE == true)
+                    {
+                        missedBeatE = true;
+                        isInSensorE = false;
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+            else
+            {
+
+            }
+        }
+
+        for (int west = 0; west < spawnerScript.spawnedBeatsW.Count; west++)
+        {
+            if (spawnerScript.spawnedBeatW != null)
+            {
+                Vector3 CurrentBeatWPosition = spawnerScript.spawnedBeatsW[west].transform.position;
+                float distance1 = Vector2.Distance(CurrentBeatWPosition, sensorW.transform.position);
+                if (distance1 < 0.2f)
+                {
+                    if (isInSensorW == true)
+                    {
+
+                    }
+                    else
+                    {
+                        isInSensorW = true;
+                    }
+                }
+                else if (distance1 > 0.7f)
+                {
+                    if (isInSensorW == true)
+                    {
+                        missedBeatW = true;
+                        isInSensorW = false;
+                    }
+                    else
+                    {
+
+                    }
+                }
+            }
+            else
+            {
+
+            }
+        }
+
     }
 
     public void OnBeatN(InputAction.CallbackContext context)
@@ -73,7 +180,6 @@ public class BeatArrowsSensor : MonoBehaviour
         if (context.performed == true && isInSensorN==true)
         {
             OnSuccessHit.Invoke();
-            //GameObject currentSpawnBeatN = spawnerScript.spawnedBeatsN[spawnerScript.spawnedBeatsN.Count -1];
             Destroy(spawnerScript.spawnedBeatsN[0]);
             spawnerScript.spawnedBeatsN.Remove(spawnerScript.spawnedBeatsN[0]);
             isInSensorN = false;
@@ -85,25 +191,46 @@ public class BeatArrowsSensor : MonoBehaviour
     }
     public void OnBeatS(InputAction.CallbackContext context)
     {
-        if (context.performed == true)
+        if (context.performed == true && isInSensorS == true)
         {
-            OnBeatSHit.Invoke();
+            OnSuccessHit.Invoke();
+            Destroy(spawnerScript.spawnedBeatsS[0]);
+            spawnerScript.spawnedBeatsS.Remove(spawnerScript.spawnedBeatsS[0]);
+            isInSensorS = false;
+        }
+        else if (context.performed == true && !isInSensorS)
+        {
+
         }
 
     }
     public void OnBeatE(InputAction.CallbackContext context)
     {
-        if (context.performed == true)
+        if (context.performed == true && isInSensorE == true)
         {
-            OnBeatEHit.Invoke();
+            OnSuccessHit.Invoke();
+            Destroy(spawnerScript.spawnedBeatsE[0]);
+            spawnerScript.spawnedBeatsE.Remove(spawnerScript.spawnedBeatsE[0]);
+            isInSensorE = false;
+        }
+        else if (context.performed == true && !isInSensorE)
+        {
+
         }
 
     }
     public void OnBeatW(InputAction.CallbackContext context)
     {
-        if (context.performed == true)
+        if (context.performed == true && isInSensorW == true)
         {
-            OnBeatWHit.Invoke();
+            OnSuccessHit.Invoke();
+            Destroy(spawnerScript.spawnedBeatsW[0]);
+            spawnerScript.spawnedBeatsW.Remove(spawnerScript.spawnedBeatsW[0]);
+            isInSensorW = false;
+        }
+        else if (context.performed == true && !isInSensorW)
+        {
+
         }
 
     }
@@ -116,6 +243,9 @@ public class BeatArrowsSensor : MonoBehaviour
     public void FailBeat()
     {
         Debug.Log("Failed Beat.");
-        missedBeat = false;
+        missedBeatN = false;
+        missedBeatS = false;
+        missedBeatE = false;
+        missedBeatW = false;
     }
 }
