@@ -257,3 +257,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BeatArrowActions
   speed: 3
+  body: {fileID: 8649763912117735622}

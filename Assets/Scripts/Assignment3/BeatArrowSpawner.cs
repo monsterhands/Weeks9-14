@@ -19,7 +19,8 @@ public class BeatArrowSpawner : MonoBehaviour
     public int currentBeatE;
     public int currentBeatW;
     public float t;
-    public bool timerMax = false;
+    public int timerMax;
+    public bool hitTimerMax = false;
     public GameObject spawnedBeatN;
     public List<GameObject> spawnedBeatsN;
     public GameObject spawnedBeatS;
@@ -39,102 +40,120 @@ public class BeatArrowSpawner : MonoBehaviour
         currentBeatS = 0;
         currentBeatE = 0;
         currentBeatW = 0;
-        PlayMonsterASong();
-        Debug.Log("Song is playing");
+        PlayMonsterASong();        
     }
 
     // Update is called once per frame
     void Update()
     {
         //add if condition for bool to pick song
+        if (t > 73)
+        {
+            hitTimerMax = true;
+        }
         if (songEnded == true)
         {
             t = 0;
+            Debug.Log("Song ended");
         }else
         {
             t += Time.deltaTime;
         }
             
 
-        if (beatsTimerN.Count < 0 && spawnedBeatsN.Count < 0)
+        if (beatsTimerN.Count == 0)
         {
-            Debug.Log("Finished north beats");
-        } else if (beatsTimerN.Count > 0 && t > beatsTimerN[0])
+            //Debug.Log("Finished north beats");
+        } 
+        else if (beatsTimerN.Count > 0 && t > beatsTimerN[0])
         {
-            Debug.Log("Beat hit");
+            //Debug.Log("Beat hit");
             spawnedBeatN = Instantiate(beatarrowN);
             spawnedBeatsN.Add(spawnedBeatN);
             currentBeatN = (int)beatsTimerN[0];
             beatsTimerN.Remove(currentBeatN);            
         }
+
         if (sensorScript.missedBeatN == true)
         {
             Destroy(spawnedBeatsN[0]);
             spawnedBeatsN.Remove(spawnedBeatsN[0]);
             sensorScript.OnFailHit.Invoke();
+            sensorScript.missedBeatN = false;
+            Debug.Log("Removed missed N");
         }
 
-        if (beatsTimerS.Count < 0 && spawnedBeatsS.Count < 0)
+        if (beatsTimerS.Count == 0)
         {
-            Debug.Log("Finished south beats");
+            //Debug.Log("Finished south beats");
         }
         else if (beatsTimerS.Count > 0 && t > beatsTimerS[0])
         {
-            Debug.Log("Beat hit");
+            //Debug.Log("Beat hit");
             spawnedBeatS = Instantiate(beatarrowS);
             spawnedBeatsS.Add(spawnedBeatS);
             currentBeatS = (int)beatsTimerS[0];
             beatsTimerS.Remove(currentBeatS);
         }
+
         if (sensorScript.missedBeatS == true)
         {
             Destroy(spawnedBeatsS[0]);
             spawnedBeatsS.Remove(spawnedBeatsS[0]);
             sensorScript.OnFailHit.Invoke();
+            sensorScript.missedBeatS = false;
+            Debug.Log("Removed missed S");
         }
 
-        if (beatsTimerE.Count < 0 && timerMax == true)
+        if (beatsTimerE.Count == 0)
         {
-            Debug.Log("Finished east beats");
+            //Debug.Log("Finished east beats");
         }
         else if (beatsTimerE.Count > 0 && t > beatsTimerE[0])
         {
-            Debug.Log("Beat hit");
+            //Debug.Log("Beat hit");
             spawnedBeatE = Instantiate(beatarrowE);
             spawnedBeatsE.Add(spawnedBeatE);
             currentBeatE = (int)beatsTimerE[0];
             beatsTimerE.Remove(currentBeatE);
         }
+
         if (sensorScript.missedBeatE == true)
         {
             Destroy(spawnedBeatsE[0]);
             spawnedBeatsE.Remove(spawnedBeatsE[0]);
             sensorScript.OnFailHit.Invoke();
+            sensorScript.missedBeatE = false;
+            Debug.Log("Removed missed E");
         }
 
-        if (beatsTimerW.Count < 0 && timerMax == true)
+        if (beatsTimerW.Count == 0 && hitTimerMax == true)
         {
             songEnded = true;
         }
         else if (beatsTimerW.Count > 0 && t > beatsTimerW[0])
         {
-            Debug.Log("Beat hit");
+            //Debug.Log("Beat hit");
             spawnedBeatW = Instantiate(beatarrowW);
             spawnedBeatsW.Add(spawnedBeatW);
             currentBeatW = (int)beatsTimerW[0];
             beatsTimerW.Remove(currentBeatW);
         }
+
         if (sensorScript.missedBeatW == true)
         {
             Destroy(spawnedBeatsW[0]);
             spawnedBeatsW.Remove(spawnedBeatsW[0]);
             sensorScript.OnFailHit.Invoke();
+            sensorScript.missedBeatW = false;
+            Debug.Log("Removed missed W");
         }
 
     }
 
     public void PlayMonsterASong()
     {
+        Debug.Log("Song is playing");
         beatsTimerN.Add(1);
         beatsTimerW.Add(2);
         beatsTimerE.Add(3);
@@ -183,17 +202,12 @@ public class BeatArrowSpawner : MonoBehaviour
         beatsTimerE.Add(63);
         beatsTimerN.Add(64);
         beatsTimerS.Add(65);
-        beatsTimerE.Add(67);
+        beatsTimerE.Add(66);
         beatsTimerN.Add(69);
-        beatsTimerN.Add(70);
         beatsTimerE.Add(70);
         beatsTimerW.Add(71);
 
-
-        if (t>73)
-        {
-            timerMax = true;
-        }
+        timerMax = 75;
     }
 
 

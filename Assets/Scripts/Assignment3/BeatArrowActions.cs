@@ -3,6 +3,7 @@ using UnityEngine;
 public class BeatArrowActions : MonoBehaviour
 {
     public float speed;
+    public SpriteRenderer body;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
