@@ -580,6 +580,51 @@ MonoBehaviour:
   isInFriend: 0
   isInLove: 0
   isInEnemy: 0
+  OnLoveEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 722002042}
+        m_TargetAssemblyTypeName: Lovemeter, Assembly-CSharp
+        m_MethodName: LoveBarks
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnFriendEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 722002042}
+        m_TargetAssemblyTypeName: Lovemeter, Assembly-CSharp
+        m_MethodName: FriendBarks
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnEnemyEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 722002042}
+        m_TargetAssemblyTypeName: Lovemeter, Assembly-CSharp
+        m_MethodName: EnemyBarks
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   friendBark: {fileID: 1022782176}
   loveBark: {fileID: 1221923164}
   enemyBark: {fileID: 956265776}
@@ -806,7 +851,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -1259242931, guid: 529af4bdebfb57844ac40648c60dbc05, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -837,8 +882,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BarkTimer
   currentObject: {fileID: 956265776}
-  otherBark1: {fileID: 1022782176}
-  otherBark2: {fileID: 1221923164}
 --- !u!1 &1022782176
 GameObject:
   m_ObjectHideFlags: 0
@@ -928,8 +971,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BarkTimer
   currentObject: {fileID: 1022782176}
-  otherBark1: {fileID: 1221923164}
-  otherBark2: {fileID: 956265776}
 --- !u!1 &1057118627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1295,8 +1336,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BarkTimer
   currentObject: {fileID: 1221923164}
-  otherBark1: {fileID: 1022782176}
-  otherBark2: {fileID: 956265776}
 --- !u!1001 &1260698284
 PrefabInstance:
   m_ObjectHideFlags: 0

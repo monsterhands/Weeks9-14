@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Lovemeter : MonoBehaviour
@@ -7,6 +8,9 @@ public class Lovemeter : MonoBehaviour
     public bool isInFriend = false;
     public bool isInLove = false;
     public bool isInEnemy = false;
+    public UnityEvent OnLoveEnter;
+    public UnityEvent OnFriendEnter;
+    public UnityEvent OnEnemyEnter;
     public GameObject friendBark;
     public GameObject loveBark;
     public GameObject enemyBark;
@@ -22,35 +26,85 @@ public class Lovemeter : MonoBehaviour
     {
         if (slider.value >= 70)
         {
-            isInLove = true;
-            isInFriend = false;
-            isInEnemy = false;
-        } else if (slider.value < 70 && slider.value > 45)
+            if(isInLove == true)
+            {
+
+            } else
+            {
+                isInLove = true;
+                OnLoveEnter.Invoke();
+            }        
+        } else
         {
-            isInFriend = true;
-            isInEnemy = false;
-            isInLove = false;
-        } else if (slider.value <= 45)
-        {
-            isInEnemy = true;
-            isInLove = false;
-            isInFriend = false;
+            if (isInLove == true)
+            {
+                isInLove = false;
+            } else
+            {
+
+            }
         }
 
-        if (isInFriend == true)
+        if (slider.value < 70 && slider.value > 45)
         {
-            friendBark.SetActive(true);
+            if (isInFriend == true)
+            {
+
+            }
+            else
+            {
+                isInFriend = true;
+                OnFriendEnter.Invoke();
+            }
+        }
+        else
+        {
+            if (isInFriend == true)
+            {
+                isInFriend = false;
+            } else
+            {
+
+            }
         }
 
-        if (isInLove == true)
+        if (slider.value <= 45)
         {
-            loveBark.SetActive(true);
-        }
+            if (isInEnemy == true)
+            {
 
-        if (isInEnemy == true)
-        {
-            enemyBark.SetActive(true);
+            }
+            else
+            {
+                isInEnemy = true;
+                OnEnemyEnter.Invoke();
+            }
         }
+        else
+        {
+            if (isInEnemy == true)
+            {
+                isInEnemy = false;
+            } else
+            {
+
+            }
+        }       
+
+        //if (isInFriend == true)
+        //{
+        //    friendBark.SetActive(true);
+        //}
+
+        //if (isInLove == true)
+        //{
+        //    loveBark.SetActive(true);
+        //}
+
+        //if (isInEnemy == true)
+        //{
+        //    enemyBark.SetActive(true);
+        //}
     }
 
     public void AddLove()
@@ -73,6 +127,41 @@ public class Lovemeter : MonoBehaviour
         else
         {
             slider.value--;
+        }
+    }
+
+    public void LoveBarks()
+    {
+        if (isInLove == true)
+        {
+            loveBark.SetActive(true);
+        } else
+        {
+
+        }
+    }
+
+    public void FriendBarks()
+    {
+        if (isInFriend == true)
+        {
+            friendBark.SetActive(true);
+        }
+        else
+        {
+
+        }
+    }
+
+    public void EnemyBarks()
+    {
+        if (isInEnemy == true)
+        {
+            enemyBark.SetActive(true);
+        }
+        else
+        {
+
         }
     }
 }

@@ -3,14 +3,14 @@ using UnityEngine;
 public class BarkTimer : MonoBehaviour
 {
     public GameObject currentObject;
-    public GameObject otherBark1;
-    public GameObject otherBark2;
-    private float timerValue = 0f;
+    //public GameObject otherBark1;
+    //public GameObject otherBark2;
+    private float timerValue;
     private float timerMaxValue = 3f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        timerValue = 0f;
     }
 
     // Update is called once per frame
@@ -23,10 +23,10 @@ public class BarkTimer : MonoBehaviour
             //otherBark2.SetActive(false);
         }
 
-        if (timerValue > timerMaxValue)
+        if (timerValue >= timerMaxValue)
         {
-            currentObject.SetActive(false);
             timerValue = 0;
+            currentObject.SetActive(false);            
         }
     }
 }
