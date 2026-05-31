@@ -54,7 +54,6 @@ public class BeatArrowSpawner : MonoBehaviour
         if (songEnded == true)
         {
             t = 0;
-            Debug.Log("Song ended");
         }else
         {
             t += Time.deltaTime;
