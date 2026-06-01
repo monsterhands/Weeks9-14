@@ -36,6 +36,7 @@ public class BeatArrowSpawner : MonoBehaviour
     void Start()
     {
         t = 0;
+        timerMax = 0;
         currentBeatN = 0;
         currentBeatS = 0;
         currentBeatE = 0;
@@ -47,7 +48,7 @@ public class BeatArrowSpawner : MonoBehaviour
     void Update()
     {
         //add if condition for bool to pick song
-        if (t > 73)
+        if (t > timerMax)
         {
             hitTimerMax = true;
         }
@@ -152,7 +153,69 @@ public class BeatArrowSpawner : MonoBehaviour
 
     public void PlayMonsterASong()
     {
-        Debug.Log("Song is playing");
+        Debug.Log("Song A is playing");
+        beatsTimerS.Add(1);
+        beatsTimerN.Add(2);
+        beatsTimerE.Add(3);
+        beatsTimerW.Add(4);
+        beatsTimerN.Add(5);
+        beatsTimerS.Add(5);
+        beatsTimerE.Add(6);
+        beatsTimerS.Add(8);
+        beatsTimerW.Add(9);
+        beatsTimerE.Add(10);
+        beatsTimerN.Add(12);
+        beatsTimerW.Add(14);
+        beatsTimerN.Add(14);
+        beatsTimerE.Add(15);
+        beatsTimerS.Add(16);
+        beatsTimerE.Add(17);
+        beatsTimerW.Add(18);
+        beatsTimerN.Add(19);
+        beatsTimerE.Add(20);
+        beatsTimerN.Add(22);
+        beatsTimerS.Add(22);
+        beatsTimerW.Add(24);
+        beatsTimerW.Add(26);
+        beatsTimerS.Add(26);
+        beatsTimerE.Add(27);
+        beatsTimerS.Add(29);
+        beatsTimerN.Add(31);
+        beatsTimerE.Add(34);
+        beatsTimerN.Add(35);
+        beatsTimerE.Add(36);
+        beatsTimerE.Add(37);
+        beatsTimerW.Add(37);
+        beatsTimerN.Add(39);
+        beatsTimerS.Add(41);
+        beatsTimerW.Add(44);
+        beatsTimerN.Add(47);
+        beatsTimerS.Add(48);
+        beatsTimerS.Add(50);
+        beatsTimerE.Add(52);
+        beatsTimerW.Add(53);
+        beatsTimerN.Add(54);
+        beatsTimerS.Add(55);
+        beatsTimerN.Add(56);
+        beatsTimerW.Add(57);
+        beatsTimerS.Add(59);
+        beatsTimerE.Add(60);
+        beatsTimerN.Add(60);
+        beatsTimerW.Add(61);
+        beatsTimerN.Add(62);
+        beatsTimerW.Add(62);
+        beatsTimerS.Add(63);
+        beatsTimerS.Add(65);
+        beatsTimerE.Add(66);
+        beatsTimerW.Add(66);
+
+        timerMax = 70;
+    }
+
+
+    void PlayMonsterBSong()
+    {
+        Debug.Log("Song B is playing");
         beatsTimerN.Add(1);
         beatsTimerW.Add(2);
         beatsTimerE.Add(3);
@@ -207,12 +270,6 @@ public class BeatArrowSpawner : MonoBehaviour
         beatsTimerW.Add(71);
 
         timerMax = 75;
-    }
-
-
-    void PlayMonsterBSong()
-    {
-
     }
 
 }
