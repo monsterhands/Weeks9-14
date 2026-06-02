@@ -40,8 +40,7 @@ public class BeatArrowSpawner : MonoBehaviour
         currentBeatN = 0;
         currentBeatS = 0;
         currentBeatE = 0;
-        currentBeatW = 0;
-        PlayMonsterASong();        
+        currentBeatW = 0;        
     }
 
     // Update is called once per frame
@@ -55,7 +54,13 @@ public class BeatArrowSpawner : MonoBehaviour
         if (songEnded == true)
         {
             t = 0;
-        }else
+            timerMax = 0;
+            currentBeatN = 0;
+            currentBeatS = 0;
+            currentBeatE = 0;
+            currentBeatW = 0;
+        }
+        else
         {
             t += Time.deltaTime;
         }
@@ -213,7 +218,7 @@ public class BeatArrowSpawner : MonoBehaviour
     }
 
 
-    void PlayMonsterBSong()
+    public void PlayMonsterBSong()
     {
         Debug.Log("Song B is playing");
         beatsTimerN.Add(1);

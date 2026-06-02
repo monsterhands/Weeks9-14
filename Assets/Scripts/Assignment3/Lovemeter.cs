@@ -14,6 +14,7 @@ public class Lovemeter : MonoBehaviour
     public GameObject friendBark;
     public GameObject loveBark;
     public GameObject enemyBark;
+    public Rhythmdate rhythmScript;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,87 +25,83 @@ public class Lovemeter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (slider.value >= 70)
+        if (rhythmScript.songIsPlaying == true)
         {
-            if(isInLove == true)
+            if (slider.value >= 70)
             {
+                if (isInLove == true)
+                {
 
-            } else
+                }
+                else
+                {
+                    isInLove = true;
+                    OnLoveEnter.Invoke();
+                }
+            }
+            else
             {
-                isInLove = true;
-                OnLoveEnter.Invoke();
-            }        
+                if (isInLove == true)
+                {
+                    isInLove = false;
+                }
+                else
+                {
+
+                }
+            }
+
+            if (slider.value < 70 && slider.value > 45)
+            {
+                if (isInFriend == true)
+                {
+
+                }
+                else
+                {
+                    isInFriend = true;
+                    OnFriendEnter.Invoke();
+                }
+            }
+            else
+            {
+                if (isInFriend == true)
+                {
+                    isInFriend = false;
+                }
+                else
+                {
+
+                }
+            }
+
+            if (slider.value <= 45)
+            {
+                if (isInEnemy == true)
+                {
+
+                }
+                else
+                {
+                    isInEnemy = true;
+                    OnEnemyEnter.Invoke();
+                }
+            }
+            else
+            {
+                if (isInEnemy == true)
+                {
+                    isInEnemy = false;
+                }
+                else
+                {
+
+                }
+            }
         } else
         {
-            if (isInLove == true)
-            {
-                isInLove = false;
-            } else
-            {
 
-            }
-        }
-
-        if (slider.value < 70 && slider.value > 45)
-        {
-            if (isInFriend == true)
-            {
-
-            }
-            else
-            {
-                isInFriend = true;
-                OnFriendEnter.Invoke();
-            }
-        }
-        else
-        {
-            if (isInFriend == true)
-            {
-                isInFriend = false;
-            } else
-            {
-
-            }
-        }
-
-        if (slider.value <= 45)
-        {
-            if (isInEnemy == true)
-            {
-
-            }
-            else
-            {
-                isInEnemy = true;
-                OnEnemyEnter.Invoke();
-            }
-        }
-        else
-        {
-            if (isInEnemy == true)
-            {
-                isInEnemy = false;
-            } else
-            {
-
-            }
-        }       
-
-        //if (isInFriend == true)
-        //{
-        //    friendBark.SetActive(true);
-        //}
-
-        //if (isInLove == true)
-        //{
-        //    loveBark.SetActive(true);
-        //}
-
-        //if (isInEnemy == true)
-        //{
-        //    enemyBark.SetActive(true);
-        //}
+        }               
     }
 
     public void AddLove()
