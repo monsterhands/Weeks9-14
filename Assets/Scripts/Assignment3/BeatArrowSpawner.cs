@@ -31,6 +31,8 @@ public class BeatArrowSpawner : MonoBehaviour
     public List<GameObject> spawnedBeatsW;
     public bool songEnded = false;
     public BeatArrowsSensor sensorScript;
+    public Rhythmdate rhythmScriptA;
+    public Rhythmdate rhythmScriptB;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -46,7 +48,6 @@ public class BeatArrowSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //add if condition for bool to pick song
         if (t > timerMax)
         {
             hitTimerMax = true;
@@ -60,7 +61,7 @@ public class BeatArrowSpawner : MonoBehaviour
             currentBeatE = 0;
             currentBeatW = 0;
         }
-        else
+        else if (rhythmScriptA.songIsPlaying == true || rhythmScriptB.songIsPlaying == true)
         {
             t += Time.deltaTime;
         }
@@ -85,7 +86,7 @@ public class BeatArrowSpawner : MonoBehaviour
             spawnedBeatsN.Remove(spawnedBeatsN[0]);
             sensorScript.OnFailHit.Invoke();
             sensorScript.missedBeatN = false;
-            Debug.Log("Removed missed N");
+            //Debug.Log("Removed missed N");
         }
 
         if (beatsTimerS.Count == 0)
@@ -107,7 +108,7 @@ public class BeatArrowSpawner : MonoBehaviour
             spawnedBeatsS.Remove(spawnedBeatsS[0]);
             sensorScript.OnFailHit.Invoke();
             sensorScript.missedBeatS = false;
-            Debug.Log("Removed missed S");
+            //Debug.Log("Removed missed S");
         }
 
         if (beatsTimerE.Count == 0)
@@ -129,7 +130,7 @@ public class BeatArrowSpawner : MonoBehaviour
             spawnedBeatsE.Remove(spawnedBeatsE[0]);
             sensorScript.OnFailHit.Invoke();
             sensorScript.missedBeatE = false;
-            Debug.Log("Removed missed E");
+            //Debug.Log("Removed missed E");
         }
 
         if (beatsTimerW.Count == 0 && hitTimerMax == true)
@@ -151,7 +152,7 @@ public class BeatArrowSpawner : MonoBehaviour
             spawnedBeatsW.Remove(spawnedBeatsW[0]);
             sensorScript.OnFailHit.Invoke();
             sensorScript.missedBeatW = false;
-            Debug.Log("Removed missed W");
+            //Debug.Log("Removed missed W");
         }
 
     }

@@ -15,7 +15,6 @@ public class BeatArrowsSensor : MonoBehaviour
     public bool missedBeatE = false;
     public bool missedBeatW = false;
     public BeatArrowSpawner spawnerScript;
-    public BeatArrowActions beatScript;
     public GameObject sensorN;
     public GameObject sensorS;
     public GameObject sensorE;
@@ -54,8 +53,6 @@ public class BeatArrowsSensor : MonoBehaviour
                     if (isInSensorN == true)
                     {                        
                         missedBeatN = true;
-                        //beatScript = spawnerScript.spawnedBeatsN[0].GetComponent<BeatArrowActions>();
-                        //beatScript.body.color = Color.red;
                         //Debug.Log("left sensor N");
                         isInSensorN = false;
                     }
@@ -186,8 +183,6 @@ public class BeatArrowsSensor : MonoBehaviour
     {
         if (context.performed == true)
         {
-            //beatScript = spawnerScript.spawnedBeatsN[0].GetComponent<BeatArrowActions>();
-            //beatScript.body.color = Color.green;
             if (isInSensorN == true)
             {
                 OnSuccessHit.Invoke();                
@@ -276,7 +271,7 @@ public class BeatArrowsSensor : MonoBehaviour
 
     public void FailBeat()
     {
-        //Debug.Log("Failed Beat.");
+        Debug.Log("Failed Beat.");
     }
 
 }

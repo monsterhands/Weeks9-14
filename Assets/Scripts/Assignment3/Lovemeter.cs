@@ -11,21 +11,26 @@ public class Lovemeter : MonoBehaviour
     public UnityEvent OnLoveEnter;
     public UnityEvent OnFriendEnter;
     public UnityEvent OnEnemyEnter;
-    public GameObject friendBark;
-    public GameObject loveBark;
-    public GameObject enemyBark;
-    public Rhythmdate rhythmScript;
+    public GameObject friendBarkA;
+    public GameObject loveBarkA;
+    public GameObject enemyBarkA;
+    public GameObject friendBarkB;
+    public GameObject loveBarkB;
+    public GameObject enemyBarkB;
+    public Rhythmdate rhythmScriptA;
+    public Rhythmdate rhythmScriptB;
+    public CharacterSelect characterScript;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        slider.value = 35;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (rhythmScript.songIsPlaying == true)
+        if (rhythmScriptA.songIsPlaying == true || rhythmScriptB.songIsPlaying == true)
         {
             if (slider.value >= 70)
             {
@@ -129,36 +134,83 @@ public class Lovemeter : MonoBehaviour
 
     public void LoveBarks()
     {
-        if (isInLove == true)
+        if(characterScript.monsterASelected == true)
         {
-            loveBark.SetActive(true);
-        } else
-        {
+            if (isInLove == true)
+            {
+                loveBarkA.SetActive(true);
+            }
+            else
+            {
 
+            }
         }
+
+        if (characterScript.monsterBSelected == true)
+        {
+            if (isInLove == true)
+            {
+                loveBarkB.SetActive(true);
+            }
+            else
+            {
+
+            }
+        }
+
     }
 
     public void FriendBarks()
     {
-        if (isInFriend == true)
+        if (characterScript.monsterASelected == true)
         {
-            friendBark.SetActive(true);
-        }
-        else
-        {
+            if (isInFriend == true)
+            {
+                friendBarkA.SetActive(true);
+            }
+            else
+            {
 
+            }
+        }
+
+        if (characterScript.monsterBSelected == true)
+        {
+            if (isInFriend == true)
+            {
+                friendBarkB.SetActive(true);
+            }
+            else
+            {
+
+            }
         }
     }
 
     public void EnemyBarks()
     {
-        if (isInEnemy == true)
+        if (characterScript.monsterASelected == true)
         {
-            enemyBark.SetActive(true);
-        }
-        else
-        {
+            if (isInEnemy == true)
+            {
+                enemyBarkA.SetActive(true);
+            }
+            else
+            {
 
+            }
+        }
+
+        if (characterScript.monsterBSelected == true)
+        {
+            if (isInEnemy == true)
+            {
+                enemyBarkB.SetActive(true);
+            }
+            else
+            {
+
+            }
         }
     }
 }

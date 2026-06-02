@@ -8,6 +8,8 @@ public class Rhythmdate : MonoBehaviour
     public Lovemeter lovemeterScript;
     public BeatArrowSpawner spawnerScript;
     public BeatArrowsSensor sensorScript;
+    public GameObject instructionsUI;
+    public GameObject instructionsGraphic;
     public GameObject currentMonster;
     public Animator monsterAnimator;
     public bool songIsPlaying = false;
@@ -26,44 +28,40 @@ public class Rhythmdate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (characterScript.monsterASelected == true || characterScript.monsterBSelected == true)
-        {
-            songIsPlaying = true;
+        if(characterScript.instructionsRead == true && !songIsPlaying && !spawnerScript.songEnded)
+        {            
             PickSong();
-        } else if (characterScript.monsterASelected == false && characterScript.monsterBSelected == false && spawnerScript.songEnded == true)
+            songIsPlaying = true;
+        } else
+        {
+
+        }
+        
+        if (spawnerScript.songEnded == true && spawnerScript.hitTimerMax == true)
         {
             songIsPlaying = false;
             StopCoroutine(AnimateMonster());
             EvaluateEnding();
+        } else
+        {
+
         }
     }
 
     void PickSong()
     {
-        if (currentMonster.activeInHierarchy)
+        lovemeterScript.slider.value = 35;
+        songIsPlaying = true;
+        if (characterScript.monsterASelected == true)
         {
-            float t = 0;
-            t += Time.deltaTime;
-
-            if (t > 3)
-            {
-                t = 0;
-                if (characterScript.monsterASelected == true)
-                {
-                    spawnerScript.PlayMonsterASong();
-                }
-                else if (characterScript.monsterBSelected == true)
-                {
-                    spawnerScript.PlayMonsterBSong();
-                }
-                musicAudio.Play();
-                StartCoroutine(AnimateMonster());
-            }          
-            
-        } else
-        {
-
+            spawnerScript.PlayMonsterASong();
         }
+        else if (characterScript.monsterBSelected == true)
+        {
+            spawnerScript.PlayMonsterBSong();
+        }
+        musicAudio.Play();
+        StartCoroutine(AnimateMonster());
     }
 
     IEnumerator AnimateMonster()
@@ -126,18 +124,4 @@ public class Rhythmdate : MonoBehaviour
         resetButton.SetActive(true);
     }
 
-    public void ResetRhythm()
-    {
-        friendEndUI.SetActive(false);
-        loveEndUI.SetActive(false);
-        enemyEndUI.SetActive(false);
-        characterScript.ResetMonster();
-        lovemeterScript.slider.value = 35;
-        lovemeterScript.isInEnemy = false;
-        lovemeterScript.isInFriend = false;
-        lovemeterScript.isInLove = false;
-        resetButton.SetActive(false);
-        characterScript.monsterAButton.SetActive(true);
-        characterScript.monsterBButton.SetActive(true);
-    }
 }
