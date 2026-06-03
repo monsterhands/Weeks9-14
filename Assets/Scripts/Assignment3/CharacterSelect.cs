@@ -5,6 +5,7 @@ public class CharacterSelect : MonoBehaviour
 {
     public GameObject monsterAButton;
     public GameObject monsterBButton;
+    public GameObject monsterSelectUI;
     public GameObject instructionsButton;
     public GameObject instructionsGraphic;
     public bool instructionsRead;
@@ -41,6 +42,7 @@ public class CharacterSelect : MonoBehaviour
         MonsterA.SetActive(true);
         monsterAButton.SetActive(false);
         monsterBButton.SetActive(false);
+        monsterSelectUI.SetActive(false);
         instructionsButton.SetActive(true);
         instructionsGraphic.SetActive(true);
     }
@@ -51,6 +53,7 @@ public class CharacterSelect : MonoBehaviour
         MonsterB.SetActive(true);
         monsterAButton.SetActive(false);
         monsterBButton.SetActive(false);
+        monsterSelectUI.SetActive(false);
         instructionsButton.SetActive(true);
         instructionsGraphic.SetActive(true);
     }
@@ -91,6 +94,7 @@ public class CharacterSelect : MonoBehaviour
         lovemeterScript.isInLove = false;
         instructionsRead = false;
         resetButton.SetActive(false);
+        monsterSelectUI.SetActive(true);
         monsterAButton.SetActive(true);
         monsterBButton.SetActive(true);
     }
