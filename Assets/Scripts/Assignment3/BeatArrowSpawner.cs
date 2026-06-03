@@ -1,26 +1,29 @@
-using JetBrains.Annotations;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BeatArrowSpawner : MonoBehaviour
 {
+    //get a reference for the prefab arrows
     public GameObject beatarrowN;
     public GameObject beatarrowS;
     public GameObject beatarrowE;
     public GameObject beatarrowW;
+    //lists for the times beats should spawn at
     public List<int> beatsTimerN;
     public List<int> beatsTimerS;
     public List<int> beatsTimerE;
     public List<int> beatsTimerW;
+    //the beats to be targeted by the sensor script
     public int currentBeatN;
     public int currentBeatS;
     public int currentBeatE;
     public int currentBeatW;
+    //timer value variables
     public float t;
     public int timerMax;
+    //determines when the timer for the song has hit max
     public bool hitTimerMax = false;
+    //latest spawned object and a list of all in the scene
     public GameObject spawnedBeatN;
     public List<GameObject> spawnedBeatsN;
     public GameObject spawnedBeatS;
@@ -29,7 +32,9 @@ public class BeatArrowSpawner : MonoBehaviour
     public List<GameObject> spawnedBeatsE;
     public GameObject spawnedBeatW;
     public List<GameObject> spawnedBeatsW;
+    //determines when the song has fully ended
     public bool songEnded = false;
+    //references to other relevant scripts in the scene
     public BeatArrowsSensor sensorScript;
     public Rhythmdate rhythmScriptA;
     public Rhythmdate rhythmScriptB;
@@ -37,8 +42,10 @@ public class BeatArrowSpawner : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        //at the beginning, set timer variables to 0
         t = 0;
         timerMax = 0;
+        //set the current beat to 0
         currentBeatN = 0;
         currentBeatS = 0;
         currentBeatE = 0;
@@ -48,10 +55,12 @@ public class BeatArrowSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //if the timer goes over the timer max, it indicates the max has been hit
         if (t > timerMax)
         {
             hitTimerMax = true;
         }
+        //if the song/level has ended, reset all variables set to 0 at start
         if (songEnded == true)
         {
             t = 0;
@@ -61,30 +70,49 @@ public class BeatArrowSpawner : MonoBehaviour
             currentBeatE = 0;
             currentBeatW = 0;
         }
+        //otherwise if the song is playing, the timer runs
         else if (rhythmScriptA.songIsPlaying == true || rhythmScriptB.songIsPlaying == true)
         {
             t += Time.deltaTime;
         }
             
+        //NOTE:
+        //Pseudocode will explain the North beats example, as the rest of the directions
+        //are almost identical
+        //only differences will be commented
 
+
+        //if there are no beat times in the list, the list is done
         if (beatsTimerN.Count == 0)
         {
             //Debug.Log("Finished north beats");
         } 
+        //otherwise if there is one or more in the list
+        //and the timer has reached the current time at the top of the list
         else if (beatsTimerN.Count > 0 && t > beatsTimerN[0])
         {
             //Debug.Log("Beat hit");
+            //a beat is spawned from prefab
             spawnedBeatN = Instantiate(beatarrowN);
+            //spawned beat is added to the list
             spawnedBeatsN.Add(spawnedBeatN);
+            //the current beat to be used by the sensor is the first/top of the list beat 
+            //not the most recently spawned
             currentBeatN = (int)beatsTimerN[0];
+            //the time that spawned the beat to be hit is removed from the list
             beatsTimerN.Remove(currentBeatN);            
         }
 
+        //if a beat is missed, as caught by the sensor
         if (sensorScript.missedBeatN == true)
         {
+            //destroy the spawned beat
             Destroy(spawnedBeatsN[0]);
+            //remove that beat from the list of spawned beats
             spawnedBeatsN.Remove(spawnedBeatsN[0]);
+            //invoke unity event to alert a beat has been failed
             sensorScript.OnFailHit.Invoke();
+            //reset the missed beat bool to catch future ones
             sensorScript.missedBeatN = false;
             //Debug.Log("Removed missed N");
         }
@@ -133,6 +161,9 @@ public class BeatArrowSpawner : MonoBehaviour
             //Debug.Log("Removed missed E");
         }
 
+        //each song ends on a West beat
+        //therefore, if there are no more beats in the list and the timer is at max
+        //the song has ended
         if (beatsTimerW.Count == 0 && hitTimerMax == true)
         {
             songEnded = true;
@@ -159,6 +190,7 @@ public class BeatArrowSpawner : MonoBehaviour
 
     public void PlayMonsterASong()
     {
+        //this class is called to add the timestamps to a list of beats
         Debug.Log("Song A is playing");
         beatsTimerS.Add(1);
         beatsTimerN.Add(2);
@@ -215,6 +247,7 @@ public class BeatArrowSpawner : MonoBehaviour
         beatsTimerE.Add(66);
         beatsTimerW.Add(66);
 
+        //set the timer to the unique max per the song
         timerMax = 70;
     }
 

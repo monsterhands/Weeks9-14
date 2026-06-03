@@ -4,17 +4,27 @@ using UnityEngine.InputSystem;
 
 public class BeatArrowsSensor : MonoBehaviour
 {
+    //define the unity events for success and failure
     public UnityEvent OnSuccessHit;
     public UnityEvent OnFailHit;
+    //determines if a beat is in the right sensor
     public bool isInSensorN = false;
     public bool isInSensorS = false;
     public bool isInSensorE = false;
     public bool isInSensorW = false;
+    //determines if a beat was missed
     public bool missedBeatN = false;
     public bool missedBeatS = false;
     public bool missedBeatE = false;
     public bool missedBeatW = false;
+    //determines if a beat is early
+    public bool earlyBeatN = false;
+    public bool earlyBeatS = false;
+    public bool earlyBeatE = false;
+    public bool earlyBeatW = false;
+    //reference for relevant script in scene
     public BeatArrowSpawner spawnerScript;
+    //sensor prefabs
     public GameObject sensorN;
     public GameObject sensorS;
     public GameObject sensorE;
@@ -29,36 +39,47 @@ public class BeatArrowsSensor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //
+        //a loop for cycling through and checking in the list of spawned beat objects
         for (int north = 0; north < spawnerScript.spawnedBeatsN.Count; north++)
         {
+            //if there are objects in the list of spawned beats
             if (spawnerScript.spawnedBeatsN[north] != null)
             {
+                //get the position of the beat to be picked up by the sensor from the list in the spawner script
                 Vector3 CurrentBeatNPosition = spawnerScript.spawnedBeatsN[0].transform.position;
+                //get the distance between the current sensed beat and the sensor for that beat's direction
                 float distance1 = Vector2.Distance(CurrentBeatNPosition, sensorN.transform.position);
+                //if the distance is less than a value,
+                //indicate whether you are in the sensor
                 if (distance1 < 0.5f)
                 {
                     if (isInSensorN == true)
                     {
-
+                        //in the sensor
                     }
                     else
                     {
+                        //just entered the sensor
                         isInSensorN = true;
+                        earlyBeatN = false;
                         //Debug.Log("in sensor N");
                     }
                 }
                 else
                 {                    
                     if (isInSensorN == true)
-                    {                        
+                    {        
+                        //the beat left the sensor
+                        //the beat was missed!
                         missedBeatN = true;
                         //Debug.Log("left sensor N");
+                        //reset the sensor detection for the next beat
                         isInSensorN = false;
                     }
                     else
                     {
-                    
+                        //the beat hasn't touched the sensor a day in its life
+                        earlyBeatN = true;
                     }
                 }
             } else
@@ -67,6 +88,7 @@ public class BeatArrowsSensor : MonoBehaviour
             }
         }
 
+        //same kind of code for the other directions
         for (int south = 0; south < spawnerScript.spawnedBeatsS.Count; south++)
         {
             if (spawnerScript.spawnedBeatsS[south] != null)
@@ -82,6 +104,7 @@ public class BeatArrowsSensor : MonoBehaviour
                     else
                     {
                         isInSensorS = true;
+                        earlyBeatS = false;
                         //Debug.Log("in sensor S");
                     }
                 }
@@ -95,7 +118,9 @@ public class BeatArrowsSensor : MonoBehaviour
                     }
                     else
                     {
-
+                        //the beat is on its way
+                        //too early to hit
+                        earlyBeatS = true;
                     }
                 }
             }
@@ -120,6 +145,7 @@ public class BeatArrowsSensor : MonoBehaviour
                     else
                     {
                         isInSensorE = true;
+                        earlyBeatE = false;
                     }
                 }
                 else
@@ -131,7 +157,7 @@ public class BeatArrowsSensor : MonoBehaviour
                     }
                     else
                     {
-
+                        earlyBeatE = true;
                     }
                 }
             }
@@ -156,6 +182,7 @@ public class BeatArrowsSensor : MonoBehaviour
                     else
                     {
                         isInSensorW = true;
+                        earlyBeatW = false;
                     }
                 }
                 else
@@ -167,7 +194,7 @@ public class BeatArrowsSensor : MonoBehaviour
                     }
                     else
                     {
-
+                        earlyBeatW = true;
                     }
                 }
             }
@@ -179,19 +206,30 @@ public class BeatArrowsSensor : MonoBehaviour
 
     }
 
+    //on a specific input (multiple tracked types), call a Unity Event
     public void OnBeatN(InputAction.CallbackContext context)
     {
+        //if the context meets 'performed', aka the input is active,
+        //assess further conditions
         if (context.performed == true)
         {
+            //if the input is happening and the sensor is being tripped
             if (isInSensorN == true)
             {
-                OnSuccessHit.Invoke();                
+                //the beat was hit and success was achieved
+                //call the Unity Event for success
+                OnSuccessHit.Invoke();    
+                //destroy the spawned beat
                 Destroy(spawnerScript.spawnedBeatsN[0]);
+                //remove the spawned beat from the list
                 spawnerScript.spawnedBeatsN.Remove(spawnerScript.spawnedBeatsN[0]);
+                //toggle the sensor off after removal/destruction
                 isInSensorN = false;
-            } else
+            } else if (earlyBeatN == true)
             {
-
+                //if you hit the input too early before the sensor is tripped
+                //you get a failed beat Unity Event
+                OnFailHit.Invoke();
             }
             
         } else
@@ -200,6 +238,8 @@ public class BeatArrowsSensor : MonoBehaviour
         }
         
     }
+
+    //same commenting for the other inputs
     public void OnBeatS(InputAction.CallbackContext context)
     {
         if (context.performed == true)
@@ -210,9 +250,9 @@ public class BeatArrowsSensor : MonoBehaviour
                 Destroy(spawnerScript.spawnedBeatsS[0]);
                 spawnerScript.spawnedBeatsS.Remove(spawnerScript.spawnedBeatsS[0]);
                 isInSensorS = false;
-            } else
+            } else if (earlyBeatS == true)
             {
-
+                OnFailHit.Invoke();
             }                
         }
         else
@@ -231,9 +271,9 @@ public class BeatArrowsSensor : MonoBehaviour
                 Destroy(spawnerScript.spawnedBeatsE[0]);
                 spawnerScript.spawnedBeatsE.Remove(spawnerScript.spawnedBeatsE[0]);
                 isInSensorE = false;
-            } else
+            } else if (earlyBeatE == true)
             {
-
+                OnFailHit.Invoke();
             }            
         }
         else
@@ -252,9 +292,9 @@ public class BeatArrowsSensor : MonoBehaviour
                 Destroy(spawnerScript.spawnedBeatsW[0]);
                 spawnerScript.spawnedBeatsW.Remove(spawnerScript.spawnedBeatsW[0]);
                 isInSensorW = false;
-            } else
+            } else if (earlyBeatW == true)
             {
-
+                OnFailHit.Invoke();
             }                
         }
         else
@@ -264,11 +304,13 @@ public class BeatArrowsSensor : MonoBehaviour
 
     }
 
+    //this unity event indicates in console that the beat was a success
     public void SuccessBeat()
     {
         Debug.Log("Successful Beat!");
     }
 
+    //this unity event indicates in console that the beat was a failure
     public void FailBeat()
     {
         Debug.Log("Failed Beat.");
